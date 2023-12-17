@@ -3,7 +3,7 @@ name: Workflow for QA Testing
 on:
   pull_request:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:
