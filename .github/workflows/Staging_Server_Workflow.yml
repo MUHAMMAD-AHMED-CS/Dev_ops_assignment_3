@@ -1,0 +1,68 @@
+name: Workflow for Deploying on the Staging Server
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Setting up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.10.0
+
+      - name: Check node and npm versions
+        run: |
+          node -v
+          npm -v
+
+      - name: Resolve Dependencies
+        run: npm install
+
+      - name: Build React App
+        run: npm run build-react
+        
+      - name: Deploy Changes to the Staging Server
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: ./*
+          remote_path: ~/
+          remote_host: 3.27.141.160
+          remote_user: ubuntu
+          remote_key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEogIBAAKCAQEAsvzazx5pBDCvb7Lp2AeT3jcT36WiCOY1AeqdY9OXdmu7hdpP
+            N3D/ACBl3j9nK/PXq4iPshqYWIj0lgLX8RL6o9+hsF1Skn19IXLm8BFttGHymOD3
+            kE9m7DjF35z+EScDPbNQMu79e5p0K906oc37fVvzpvHsI0GAYMfZvoViIpJ1GFBv
+            LEBlLlr+1EMeKiCPn/ErmWYhJbam5a9R+PjM6Phy3LeFUp6WJNjyrXvjf6eS4BuP
+            +7/XD6tyWTUbrEYoR+e/wknl3eOVH10vXNPtvVuQOjk0AhHsBeRAF5v6//Rg0Mmh
+            PIIJqYZ/X6do9prdivguHVvUNhNkGtiJybyVZQIDAQABAoIBAFVEeiTTcuoJG3qV
+            /CrrKTliebhAmtmsebIpB8PHyE8k8ZfJsZVS4lg4Fu9yuv7IUoUoMHSDkPIUhJh2
+            UFNLXFX3Mnrnam/ZEmR97aCOXPni84R7H9UCzqBYR4PIsYyQTk31f45UJjPdF9zR
+            rp3omBdXV9K/S2RcTwFME+JcfqzC1pGYzbTeJK+IvG7zpNVEr18VyrzUy5VZdVyA
+            HFIBAkE54iOXQOOH7zWSlGxPtxFzV/4JrTYYoprxP5kHw0P/8zrHf21HsE0ebDs0
+            cKBoFXmqBquUWM3GZKSSHjQjRU70Yc8xqRLSxu5tn7I1w4UD41KJogg5l51FefAz
+            9twOjl0CgYEA4GuI4bK4gRCQsshIXkdO0xbWVOlHLI6TkDVslLiiqwOB6d5NK+wl
+            stZNwH32rMmM+ow1HL+xwwSjEcCxkEu2RyuK54SgzuvsgH7Hp7iNuhgNK4C7lfKV
+            oWRIYUBHDML3T6eXzHTGPIzvCevjjEIqnpL6C/QZOWzNlAPswfqm92MCgYEAzCys
+            iE2wUZ3ZJ68gYRuB03aruA6sqF2ZnckeODx/EA9tcFNTzfe60J2hdUBJlUJ6UmPg
+            MRkxBwil2K0/aVWY7gkcuvIK8nur8dbidcBcOhOHir/YYkrj23xidWqqqX2pUXMH
+            PX5S33G/i7DffSPkdM3KKN6fSUAb4Nonjh3FzpcCgYB+oo+B9CyCv8s25ydW89v5
+            51gYX+5GqUmBRXQ405sO7xK+2i8nysBXEvCa3zlztOO1eap6x3zSc+pkmRxZNS/t
+            JxfhnohzWtOAiom1DcIDsZC07JZtfY6LnJ/vKKsu+1E8hHB28anu/wPf0Fj9i1Sr
+            WHp6hko5ijjS/gf6SasvywKBgCGv2UOf9dBxh8u5ZFFBVZlLQifbG/engdn7veWv
+            bZN7yCW5SeF41zTmXSZYVguvbTk8y1eufV1YuuxWIVlCyzmy/S+HEfFSIFuFhdXB
+            yDW41Ss6XfxRuOiUzDXtRH00g4Qxw2cM+aVuQhlNNIKUMnRnI8y8dnGCh1cBB3e2
+            R9W/AoGAPjGYrifdWb3rZXuV7ntTdd3adKdFF7OApvls4CAPW8e/9qXy/D3wWinY
+            hOVydbamCTJaEs16EkgBnjk7DKFC47/HoGGkQ3R3dVFG4L/4Mkj6t3rTDyaBJETp
+            pqsR+84YwD3MCuJaqIhwfHQ/XQ+6cq2X+BC6TK4M6a7pQjMGcp0=
+            -----END RSA PRIVATE KEY-----
