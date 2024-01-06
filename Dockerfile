@@ -11,7 +11,7 @@ RUN apt-get install nodejs -y
 
 RUN mkdir ./Service
 
-COPY ./ReactNodeTesting ./Service
+COPY ./React_Node_test_app ./Service
 
 WORKDIR ./Service
 
